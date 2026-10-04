@@ -8,7 +8,7 @@ This project recreates the core user interface and experience of a movie/event b
 
 ## 🚀 Live Demo
 
-🔗 **Live Website:** Coming Soon
+🔗 **Live Website:** https://bookmyshow-clone-j0qkrog3g-shivang-s-projects786.vercel.app/
 
 🔗 **GitHub Repository:** https://github.com/YOUR_USERNAME/bookmyshow-frontend
 
