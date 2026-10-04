@@ -387,3 +387,19 @@ footer {
   background: #f84464;
   color: white;
 }
+
+.no-results {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 10px;
+}
+
+.no-results h3 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.no-results p {
+  color: #777;
+}

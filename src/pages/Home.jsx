@@ -5,6 +5,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const movies = [
   {
@@ -42,6 +43,8 @@ const movies = [
 function Home() {
   const navigate = useNavigate();
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   const user = JSON.parse(localStorage.getItem("bookmyshowUser"));
   const isLoggedIn =
     localStorage.getItem("bookmyshowLoggedIn") === "true";
@@ -50,6 +53,12 @@ function Home() {
     localStorage.removeItem("bookmyshowLoggedIn");
     navigate("/");
   };
+
+  const filteredMovies = movies.filter((movie) =>
+    `${movie.title} ${movie.genre}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
 
   return (
     <>
@@ -63,8 +72,12 @@ function Home() {
 
           <div className="search">
             <Search size={19} />
+
             <input
+              type="text"
               placeholder="Search for Movies, Events, Plays, Sports and Activities"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
@@ -141,100 +154,117 @@ function Home() {
         </div>
       </section>
 
-      {/* MAIN CONTENT */}
       <main>
 
         {/* MOVIES */}
         <section className="section" id="movies">
 
           <div className="heading">
-            <h2>Recommended Movies</h2>
-            <a href="#all">See All ›</a>
+            <h2>
+              {searchTerm
+                ? `Search Results for "${searchTerm}"`
+                : "Recommended Movies"}
+            </h2>
+
+            {!searchTerm && <a href="#all">See All ›</a>}
           </div>
 
-          <div className="movie-grid">
+          {filteredMovies.length > 0 ? (
+            <div className="movie-grid">
 
-            {movies.map((movie) => (
-              <article
-                className="movie-card"
-                key={movie.title}
-              >
-                <img
-                  src={movie.image}
-                  alt={movie.title}
-                />
+              {filteredMovies.map((movie) => (
+                <article
+                  className="movie-card"
+                  key={movie.title}
+                >
+                  <img
+                    src={movie.image}
+                    alt={movie.title}
+                  />
 
-                <h3>{movie.title}</h3>
+                  <h3>{movie.title}</h3>
 
-                <p>{movie.genre}</p>
-              </article>
-            ))}
+                  <p>{movie.genre}</p>
+                </article>
+              ))}
 
-          </div>
+            </div>
+          ) : (
+            <div className="no-results">
+              <h3>No movies found</h3>
+              <p>
+                Try searching for another movie or genre.
+              </p>
+            </div>
+          )}
 
         </section>
 
         {/* PROMOTIONAL BANNER */}
-        <section className="wide-banner">
+        {!searchTerm && (
+          <>
+            <section className="wide-banner">
 
-          <div>
-            <small>BOOKMYSHOW</small>
+              <div>
+                <small>BOOKMYSHOW</small>
 
-            <h2>
-              Find your next great experience.
-            </h2>
+                <h2>
+                  Find your next great experience.
+                </h2>
 
-            <p>
-              Movies, concerts, sports, comedy and much more.
-            </p>
-          </div>
+                <p>
+                  Movies, concerts, sports, comedy and much more.
+                </p>
+              </div>
 
-          <button>
-            Explore Events
-          </button>
+              <button>
+                Explore Events
+              </button>
 
-        </section>
+            </section>
 
-        {/* CATEGORIES */}
-        <section
-          className="section"
-          id="events"
-        >
+            {/* CATEGORIES */}
+            <section
+              className="section"
+              id="events"
+            >
 
-          <div className="heading">
-            <h2>Explore Categories</h2>
-            <a href="#all">See All ›</a>
-          </div>
+              <div className="heading">
+                <h2>Explore Categories</h2>
+                <a href="#all">See All ›</a>
+              </div>
 
-          <div className="categories">
+              <div className="categories">
 
-            <div className="category">
-              <b>🎬</b>
-              <h3>Movies</h3>
-              <p>Latest releases</p>
-            </div>
+                <div className="category">
+                  <b>🎬</b>
+                  <h3>Movies</h3>
+                  <p>Latest releases</p>
+                </div>
 
-            <div className="category">
-              <b>🎤</b>
-              <h3>Events</h3>
-              <p>Live entertainment</p>
-            </div>
+                <div className="category">
+                  <b>🎤</b>
+                  <h3>Events</h3>
+                  <p>Live entertainment</p>
+                </div>
 
-            <div className="category">
-              <b>🏟️</b>
-              <h3>Sports</h3>
-              <p>Watch it live</p>
-            </div>
+                <div className="category">
+                  <b>🏟️</b>
+                  <h3>Sports</h3>
+                  <p>Watch it live</p>
+                </div>
 
-            <div className="category">
-              <b>🎭</b>
-              <h3>Plays</h3>
-              <p>Theatre & drama</p>
-            </div>
+                <div className="category">
+                  <b>🎭</b>
+                  <h3>Plays</h3>
+                  <p>Theatre & drama</p>
+                </div>
 
-          </div>
+              </div>
 
-        </section>
+            </section>
+          </>
+        )}
 
       </main>
 
